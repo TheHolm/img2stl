@@ -1,0 +1,7 @@
+Package: img2stl
+Version: 0.1.0
+Section: base
+Priority: optional
+Architecture: amd64
+Maintainer: TheHolm <theholm@users.noreply.github.com>
+Description: Yet another image to STL mesh converter, focused on creating STLs for CNC engraving.

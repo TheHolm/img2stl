@@ -12,7 +12,7 @@ jobs:
       image: debian:bullseye
     steps:
       - name: checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install dependencies
         run: |
           apt update
@@ -27,13 +27,19 @@ jobs:
           mkdir -p pkg/usr/local/bin
           cp target/release/img2stl pkg/usr/local/bin/
           dpkg-deb --build pkg img2stl.deb
+      - name: Strip and generate standalone binary
+        run: |
+          apt install -y strip-nondeterminism
+          strip target/release/img2stl
+          cp target/release/img2stl img2stl
 
       - name: Upload DEB file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: debian-artifacts
           path: |
             target/release/img2stl
+            img2stl
             img2stl.deb
 
  build-windows:

@@ -4,6 +4,8 @@ on:
   push:
     branches: [master]
   pull_request:
+  release:
+    types: [created]
 
 jobs:
  build-linux:
@@ -11,7 +13,7 @@ jobs:
     container:
       image: debian:bullseye
     steps:
-      - name: checkout
+      - name: Checkout repo
         uses: actions/checkout@v4
       - name: Install dependencies
         run: |
@@ -40,20 +42,40 @@ jobs:
         with:
           name: debian-artifacts
           path: |
-            target/release/img2stl
             img2stl
             img2stl.deb
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            img2stl
+            img2stl.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
  build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions-rs/toolchain@v1
+      - name: Checkout repo
+        uses: actions/checkout@v4
+      - name: Install toolchain
+        uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
       - name: Build exe
         run: cargo build --release
-      - uses: actions/upload-artifact@v4
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
         with:
           name: windows-artifacts
           path: target/release/img2stl.exe
+
+      - name: Upload to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            target/release/img2stl.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

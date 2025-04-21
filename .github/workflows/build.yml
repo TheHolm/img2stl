@@ -4,8 +4,10 @@ on:
   push:
     branches: [master]
   pull_request:
-  release:
-    types: [created]
+  tags:
+    - v*:
+      types:
+        - created
 
 jobs:
  build-linux:

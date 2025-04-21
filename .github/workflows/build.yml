@@ -18,7 +18,7 @@ jobs:
           apt update
           apt install -y curl build-essential pkg-config libssl-dev dpkg-dev
           curl https://sh.rustup.rs -sSf | sh -s -- -y
-          source $HOME/.cargo/env
+          . $HOME/.cargo/env
       - name: Build binary
         run: cargo build --release
       - name: Create .deb package
@@ -45,13 +45,13 @@ jobs:
  build-windows:
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: stable
       - name: Build exe
         run: cargo build --release
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: windows-artifacts
           path: target/release/img2stl.exe

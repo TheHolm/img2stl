@@ -27,4 +27,15 @@ Options:
 
 ```
 
-Windows executable provided as best effort, have no means to test it.   
+## Releases
+
+* deb is targeting Debian latst.
+* standalone Linux binary should be run on any modern Linuxes. Dependencies are:
+  ```
+  linux-vdso.so.1
+  libgcc_s.so.1
+  libm.so.6
+  libc.so.6
+  ld-linux-x86-64.so.2
+  ```
+* Windows executable provided as best effort, have no means to test it.   
